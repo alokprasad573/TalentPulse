@@ -8,10 +8,10 @@ export default defineConfig({
     target: 'es2022',
     rollupOptions: {
       output: {
-        manualChunks: {
-          tfjs: ['@tensorflow/tfjs'],
-          charts: ['recharts'],
-          motion: ['gsap', 'framer-motion'],
+        manualChunks(id) {
+          if (id.includes('@tensorflow/tfjs')) return 'tfjs';
+          if (id.includes('recharts')) return 'charts';
+          if (id.includes('framer-motion') || id.includes('gsap')) return 'motion';
         },
       },
     },
