@@ -5,7 +5,7 @@
   "outputDirectory": "web/dist",
   "rewrites": [
     {
-      "source": "/((?!models/|assets/).*)",
+      "source": "/((?!models/|assets/|favicon\\.svg).*)",
       "destination": "/index.html"
     }
   ],

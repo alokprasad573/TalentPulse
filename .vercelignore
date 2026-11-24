@@ -1,9 +1,10 @@
-# Exclude Python/ML artifacts from Vercel static frontend deployments
-data/
-models/
-notebooks/
-reports/
-.venv/
+# Exclude root-level Python/ML artifacts only (leading '/' anchors to repo root
+# so web/src/data/ and web/public/models/ are never ignored)
+/data/
+/models/
+/notebooks/
+/reports/
+/.venv/
 __pycache__/
 *.pkl
 *.csv
