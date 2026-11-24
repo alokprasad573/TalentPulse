@@ -9,7 +9,7 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-3.3.0-blue?style=flat)](https://xgboost.readthedocs.io)
 [![TensorFlow.js](https://img.shields.io/badge/TensorFlow.js-4.22.0-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/js)
 [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.3.8-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
 
 ---
