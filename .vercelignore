@@ -1,0 +1,12 @@
+# Exclude Python/ML artifacts from Vercel static frontend deployments
+data/
+models/
+notebooks/
+reports/
+.venv/
+__pycache__/
+*.pkl
+*.csv
+*.ipynb
+*.py
+*.pdf

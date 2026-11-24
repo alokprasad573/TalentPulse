@@ -312,3 +312,8 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# Vercel & Python local envs
+.vercel
+.venv/
+__pycache__/
