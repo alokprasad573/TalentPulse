@@ -1,568 +1,370 @@
-# Employee Attrition Prediction
+# TalentPulse — Employee Attrition Prediction & Proactive Retention Engine
 
-> A machine learning project to identify employees at risk of leaving — enabling HR teams to take proactive retention actions before it's too late.
+> An enterprise-grade, end-to-end Machine Learning and Browser-based AI system to predict employee turnover risk, diagnose root drivers, and provide actionable retention interventions before departure occurs.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.14.10-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![Jupyter Notebook](https://img.shields.io/badge/Jupyter-Notebook-F37626.svg?style=flat&logo=jupyter&logoColor=white)](https://jupyter.org)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.9.0-F7931E?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![XGBoost](https://img.shields.io/badge/XGBoost-3.3.0-blue?style=flat)](https://xgboost.readthedocs.io)
+[![TensorFlow.js](https://img.shields.io/badge/TensorFlow.js-4.22.0-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/js)
+[![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
 
 ---
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Business Objective](#business-objective)
-- [Project Structure](#project-structure)
-- [Dataset Information](#dataset-information)
-- [Exploratory Data Analysis](#exploratory-data-analysis-eda)
-- [Data Preprocessing](#data-preprocessing)
-- [Feature Selection](#feature-selection)
-- [Handling Class Imbalance](#handling-class-imbalance)
-- [Machine Learning Models](#machine-learning-models)
-- [Model Performance Comparison](#model-performance-comparison)
-- [Confusion Matrix Summary](#confusion-matrix-summary)
-- [Final Model Selection](#final-model-selection)
-- [Business Insights & Recommendations](#business-insights--recommendations)
-- [Limitations](#limitations)
-- [Technologies Used](#technologies-used)
-- [How to Run](#how-to-run)
-- [Conclusion](#conclusion)
+- [Key Features](#key-features)
+- [Project Architecture](#project-architecture)
+- [Dataset & Demographics](#dataset--demographics)
+- [Machine Learning Pipeline](#machine-learning-pipeline)
+  - [Feature Engineering (80 Features)](#feature-engineering-80-features)
+  - [Hyperparameter Optimization & Ensembles](#hyperparameter-optimization--ensembles)
+  - [Dual Operational Threshold Modes](#dual-operational-threshold-modes)
+- [Model Performance Matrix](#model-performance-matrix)
+- [EDA Statistical Summary (`reports/eda_summary.json`)](#eda-statistical-summary-reportseda_summaryjson)
+- [Reports & Visual Diagnostics](#reports--visual-diagnostics)
+- [Model Metadata (`model_metadata.json`)](#model-metadata-model_metadatajson)
+- [Client-Side Web Application (`web/`)](#client-side-web-application-web)
+- [How to Run Locally](#how-to-run-locally)
+- [Vercel Deployment Guide](#vercel-deployment-guide)
+- [License](#license)
+- [Author](#author)
 
 ---
 
 ## Overview
 
-Employee attrition is a major challenge for organizations, resulting in increased recruitment costs, productivity loss, and disruption of business operations. This project uses machine learning to identify employees at risk of leaving and provides actionable insights to support HR retention strategies.
+Employee turnover creates substantial organizational disruption, including institutional knowledge loss, lowered team morale, and recruitment costs typically ranging from **50% to 200% of an employee's annual salary**. 
 
-The project combines **Exploratory Data Analysis (EDA)**, **feature engineering**, **machine learning model development**, and **business-focused recommendations** to help organizations proactively reduce employee turnover.
-
----
-
-## Business Objective
-
-The primary objectives of this project are to:
-
-- Identify key factors influencing employee attrition.
-- Analyze employee behavior and attrition trends.
-- Build predictive models to identify employees at risk of leaving.
-- Provide HR teams with actionable recommendations to improve retention.
+**TalentPulse** addresses this challenge through a rigorous two-tier architecture:
+1. **Offline Training & Research Pipeline:** A leak-free Python pipeline with Power Transformations (Yeo-Johnson), class-imbalance weighting, Bayesian/Randomized Hyperparameter Optimization (HPO), 10-fold Out-Of-Fold (OOF) cross-validation, and Stacking/Soft-Voting Ensembles.
+2. **Client-Side Edge Web App:** A zero-backend React 19 + TypeScript web application powered by **TensorFlow.js** (distilled MLP ensembles and exact Logistic Regression weights). Predictions execute in **under 5 ms inside the client's browser**, guaranteeing 100% data privacy — **zero employee records or PII ever leave the user's screen**.
 
 ---
 
-## Project Structure
+## Key Features
+
+- **Champion Stacking Ensemble:** Meta-learner combining Logistic Regression, Random Forest, XGBoost, Extra Trees, Gradient Boosting, and Calibrated RBF-SVC achieving **0.8527 OOF ROC-AUC** and **0.8345 Holdout Test ROC-AUC** with lowest Brier calibration error (**0.0986**).
+- **Hardcoded Balanced Class Weights:** Direct weighting ($w_0 = 0.5963$, $w_1 = 3.0947$) ensures that minority turnover cases are not swamped by the 83.9% majority retention class.
+- **Dual Threshold Strategy:** HR teams can toggle between **Balanced $F_1$ Mode** and **High-Recall Early Warning Mode** (catching up to **70.2%** of actual leavers).
+- **Client-Side TensorFlow.js Inference:** Distilled MLP models and analytical weights (~130 KB total) run completely on-device with zero API latency and zero cloud compute costs.
+- **Plain-Language Human UI:** Warm, non-technical interface with accessible word-based ratings, 1-tap realistic employee presets, dual-indicator semantic colors (safe green, watch amber, high-risk coral red), and concrete managerial action checklists.
+- **Audit & Subgroup Diagnostics:** Comprehensive reports covering demographics, feature importance consensus, ROC/PR curves, threshold sweeps, calibration reliability, and subgroup parity.
+
+---
+
+## Project Architecture
 
 ```
-Employee-Attrition-Prediction/
-│
+TalentPulse/
 ├── data/
-│   ├── employee_attrition.csv           # Raw dataset (1,470 records)
-│   ├── cleaned_employee_attrition.csv   # Preprocessed & cleaned dataset
-│   └── training_dataset.csv             # Final dataset used for model training
+│   ├── employee_attrition.csv               # Raw IBM HR dataset (1,470 records, 35 columns)
+│   ├── cleaned_employee_attrition.csv       # Preprocessed base dataset
+│   └── training_dataset.csv                 # Feature-engineered training table
 │
 ├── models/
-│   ├── logistic_regression_model.pkl    # Trained Logistic Regression model
-│   ├── random_forest_model.pkl          # Trained Random Forest model
-│   ├── xgb_model.pkl                    # Trained XGBoost model
-│   └── scaler.pkl                       # Fitted StandardScaler for inference
+│   ├── logistic_regression_model.pkl        # Tuned Logistic Regression with hardcoded weights
+│   ├── random_forest_model.pkl              # Tuned Random Forest Classifier
+│   ├── xgb_model.pkl                        # Tuned XGBoost Classifier
+│   ├── voting_ensemble_model.pkl            # Soft Voting Ensemble
+│   ├── stacking_ensemble_model.pkl          # Champion Stacking Ensemble
+│   ├── best_pipeline.pkl                    # Production Sklearn inference pipeline
+│   ├── scaler.pkl                           # Fitted preprocessing transformer
+│   └── model_metadata.json                  # Complete audit record of parameters & metrics
+│
+├── reports/
+│   ├── eda_summary.json                     # Statistical summary of EDA & feature correlations
+│   └── plots/                               # 11 Publication-quality visual analysis charts
+│       ├── 01_eda_target_and_demographics.png
+│       ├── 02_eda_income_tenure_satisfaction.png
+│       ├── 03_eda_interactions_and_correlations.png
+│       ├── 04_eda_feature_distributions.png
+│       ├── 05_eda_engineered_features.png
+│       ├── 06_feature_importance_multi_model.png
+│       ├── 07_model_comparison_metrics.png
+│       ├── 08_model_comparison_radar_and_ensemble.png
+│       ├── 09_roc_pr_and_threshold_curves.png
+│       ├── 10_confusion_matrices_comparison.png
+│       └── 11_calibration_and_subgroup_audit.png
 │
 ├── notebooks/
-│   ├── EDA.ipynb                        # Exploratory Data Analysis notebook
-│   ├── TRAINING.ipynb                   # Model training & evaluation notebook
-│   ├── REPORT.ipynb                     # Final report notebook
-│   └── plots/                           # Saved visualization outputs
-│       ├── LR_HeatMap.png
-│       ├── attrition vs Department.png
-│       ├── attrition vs job role.png
-│       ├── attrition vs monthlyincome.png
-│       ├── comparisions.png
-│       └── top_features.png
+│   ├── EDA.ipynb                            # Comprehensive exploratory data analysis
+│   ├── TRAINING.ipynb                       # Model benchmarking & HPO experiments
+│   ├── REPORT.ipynb                         # Visual reports & business narrative
+│   ├── feature_engineering.ipynb            # Dedicated feature engineering notebook
+│   └── train_pipeline.ipynb                 # 7-stage automated training pipeline notebook
 │
-├── app.py                               # Streamlit web application
-├── requirements.txt                     # Python dependencies
-├── Employee Attrition Analysis.pdf      # Project analysis report
+├── web/                                     # React 19 + TensorFlow.js Production Frontend
+│   ├── public/models/                       # Exported browser AI models & preprocessor JSONs
+│   │   ├── preprocessor.json                # Yeo-Johnson lambdas, OHE schemas & medians
+│   │   ├── dashboard_data.json              # Evaluated metrics, ROC points & EDA facts
+│   │   └── tfjs/                            # Exported TensorFlow.js model topologies & weights
+│   │       ├── logistic_regression/
+│   │       ├── stacking_ensemble/
+│   │       ├── xgboost/
+│   │       └── random_forest/
+│   ├── src/                                 # Component-driven React source code
+│   ├── package.json                         # Web dependencies (TF.js, Framer Motion, GSAP, Recharts)
+│   └── vite.config.ts                       # Code-split bundler configuration
+│
+├── feature_engineering.py                   # Reusable leak-free scikit-learn transformers
+├── train_pipeline.py                        # 7-Stage CLI pipeline script with live ANSI progress
+├── export_tfjs.py                           # Python-to-TensorFlow.js distillation & export utility
+├── vercel.json                              # Root Vercel SPA build & cache configuration
+├── .vercelignore                            # Exclusion list for lightweight Vercel deployment
+├── requirements.txt                         # Python pipeline dependencies
+├── LICENSE                                  # MIT License
 └── README.md
 ```
 
 ---
 
-## Dataset Information
+## Dataset & Demographics
 
-| Attribute | Value |
-|-----------|-------|
-| Total Records | 1,470 |
-| Features Used | 18 |
-| Target Variable | Attrition |
-| Problem Type | Binary Classification |
+The dataset is derived from the standard IBM HR Analytics Employee Attrition benchmark:
 
-### Target Distribution
-
-| Class | Count | Percentage |
-|-------|------:|-----------:|
-| No Attrition (0) | 1,233 | 83.9% |
-| Attrition (1) | 237 | 16.1% |
-
-The dataset is **moderately imbalanced**, requiring class-weighting techniques during model training.
+| Attribute | Specification |
+|:---|:---|
+| **Total Cohort** | 1,470 employee records |
+| **Train / Test Partition** | 1,176 training rows (80%) / 294 holdout test rows (20%) stratified |
+| **Target Variable** | `Attrition` (Binary: `0 = Stayed`, `1 = Departed`) |
+| **Class Distribution** | 1,233 Stayed (83.88%) vs 237 Left (16.12%) |
+| **Imbalance Ratio** | **5.20 : 1** majority-to-minority ratio |
 
 ---
 
-## Exploratory Data Analysis (EDA)
+## Machine Learning Pipeline
 
-### Key Insights
+### Feature Engineering (80 Features)
 
-#### Overtime Increases Attrition Risk
-Employees working overtime were significantly more likely to leave the organization.
+The pipeline transforms 18 base HR indicators into **80 modeling features** using domain-driven, leak-free transformations:
+- **Tenure & Career Ratios:** `TenurePerJob`, `RoleTenureRatio`, `TenureToAgeRatio`, `PromotionStagnationIndex`, `ManagerTenureRatio`.
+- **Compensation Parity:** `IncomePerWorkingYear`, `IncomeToAgeRatio`, `IncomeVsRoleMedian` (normalized against departmental benchmarks).
+- **Fatigue & Interaction Flags:** `BurnoutIndex` (Overtime weighted by distance and inverse satisfaction), `TotalSatisfactionScore`, `Overtime_x_Single`, `Overtime_x_NoStock`, `Overtime_x_LowIncome`.
+- **Preprocessing Transformers:** `PowerTransformer(method='yeo-johnson')` for skewed numerical variables, `OneHotEncoder(handle_unknown='ignore')` for nominal categories, and `StandardScaler` fitted exclusively on training folds.
 
-#### Compensation Influences Retention
-Lower monthly income was strongly associated with higher attrition rates.
+### Hyperparameter Optimization & Ensembles
 
-#### Younger Employees Are More Likely to Leave
-Employees in lower age groups showed higher turnover rates compared to experienced employees.
-
-#### Job Role Matters
-The highest attrition rates were observed among:
-- Sales Representatives
-- Laboratory Technicians
-- Human Resources Employees
-
-#### Job Satisfaction Impacts Attrition
-Employees reporting lower job satisfaction exhibited a higher likelihood of leaving.
-
----
-
-## Data Preprocessing
-
-### Missing Value Analysis
-- Dataset inspected for missing values.
-- No missing values were identified.
-
-### Outlier Analysis & Handling
-
-Numerical features were analyzed using boxplots and descriptive statistics. Potential outliers were identified in:
-
-- MonthlyIncome
-- TotalWorkingYears
-- YearsAtCompany
-- DistanceFromHome
-
-These observations represented **valid employee records** rather than data-entry errors. Therefore:
-
-- No records were removed.
-- Outliers were retained to preserve business information.
-- `StandardScaler` was applied to reduce the impact of varying feature magnitudes.
-
-### Feature Encoding
-
-Categorical variables were converted into numerical format using one-hot encoding.
-
-| Original Feature | Encoded Feature |
-|------------------|-----------------|
-| MaritalStatus | MaritalStatus_Single |
-| OverTime | OverTime_Yes |
-
-### Feature Scaling
-
-`StandardScaler` was applied to numerical variables before training Logistic Regression.
-
-**Benefits:**
-- Improved model convergence
-- Reduced influence of feature magnitude differences
-- Enhanced model stability
-
-### Train-Test Split
-
-| Split | Ratio |
-|-------|-------|
-| Training Set | 80% |
-| Testing Set | 20% |
-
-Stratified sampling was used to preserve class distribution across both splits.
+Evaluated across 6 foundational algorithms and 3 ensemble architectures using 5-fold cross-validation:
+1. **Logistic Regression (ElasticNet):** Calibrated with hardcoded inverse frequency weights ($w_0 = 0.5963$, $w_1 = 3.0947$).
+2. **Random Forest:** 449 entropy-based trees with balanced subsampling.
+3. **XGBoost:** Gradient boosted trees with subsampling and scale-weight tuning.
+4. **Extra Trees & Gradient Boosting:** Diverse tree ensembles for variance reduction.
+5. **Calibrated RBF Support Vector Machine:** Sigmoid-calibrated non-linear separator.
+6. **Weighted Soft-Voting Classifier:** Blended predictions with weights optimized via grid search.
+7. **Stacking Classifier (Champion):** Meta-logistic regression trained on 10-fold Out-Of-Fold probability outputs.
 
 ---
 
-## Feature Selection
+## Model Performance Matrix
 
-Feature importance analysis and business understanding were used to identify the most influential variables.
+Evaluated on the **unseen holdout test set (294 records, 47 actual leavers)** across both operational decision thresholds:
 
-### Selected Features (18 Total)
+### 1. High-Recall Early Warning Mode (HR Retention Priority)
+*Optimized threshold ($\tau$) to capture maximum leavers early for proactive HR check-ins:*
 
-| # | Feature |
-|---|---------|
-| 1 | Age |
-| 2 | DistanceFromHome |
-| 3 | EnvironmentSatisfaction |
-| 4 | JobInvolvement |
-| 5 | JobLevel |
-| 6 | JobSatisfaction |
-| 7 | MonthlyIncome |
-| 8 | NumCompaniesWorked |
-| 9 | PercentSalaryHike |
-| 10 | RelationshipSatisfaction |
-| 11 | StockOptionLevel |
-| 12 | TotalWorkingYears |
-| 13 | YearsAtCompany |
-| 14 | YearsInCurrentRole |
-| 15 | YearsSinceLastPromotion |
-| 16 | YearsWithCurrManager |
-| 17 | MaritalStatus_Single |
-| 18 | OverTime_Yes |
+| Model | Alert Threshold ($\tau$) | Accuracy | Recall | Precision | $F_1$ Score | ROC-AUC | PR-AUC | Brier Error |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Stacking Ensemble (Champion)** | `0.245` | **85.7%** | 59.6% | 54.9% | 0.5714 | **0.8345** | **0.5626** | **0.0986** |
+| **Weighted Soft-Vote Ensemble** | `0.260` | 84.7% | 66.0% | 51.7% | **0.5962** | 0.8284 | 0.5492 | 0.1004 |
+| **Logistic Regression** | `0.640` | 86.7% | 59.6% | **58.3%** | 0.5895 | 0.8339 | 0.5961 | 0.1462 |
+| **XGBoost** | `0.260` | 83.3% | 63.8% | 48.4% | 0.5660 | 0.8058 | 0.5118 | 0.1050 |
+| **Random Forest** | `0.400` | 80.6% | **70.2%** | 44.0% | 0.5410 | 0.7977 | 0.4866 | 0.1331 |
 
-### Most Influential Drivers of Attrition
+### 2. Balanced $F_1$ Mode
+*Equal balance between precision and recall:*
 
-| Feature | Impact |
-|---------|--------|
-| OverTime | Higher overtime increases attrition risk |
-| MonthlyIncome | Lower income increases attrition risk |
-| Age | Younger employees are more likely to leave |
-| JobSatisfaction | Lower satisfaction increases attrition |
-| YearsAtCompany | Lower tenure increases attrition |
-| TotalWorkingYears | Less experienced employees leave more frequently |
+| Model | Alert Threshold ($\tau$) | Accuracy | Recall | Precision | $F_1$ Score | ROC-AUC |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Stacking Ensemble** | `0.330` | **86.1%** | 51.1% | **57.1%** | 0.5393 | **0.8345** |
+| **Logistic Regression** | `0.735` | 86.1% | 51.1% | 57.1% | 0.5393 | 0.8339 |
+| **Weighted Soft-Vote** | `0.300` | 86.1% | **59.6%** | 56.0% | **0.5773** | 0.8284 |
+| **Gradient Boosting** | `0.305` | 86.4% | 51.1% | 58.5% | 0.5455 | 0.8173 |
 
 ---
 
-## Handling Class Imbalance
+## EDA Statistical Summary (`reports/eda_summary.json`)
 
-### Logistic Regression — Class Weight Calculation
+The statistical findings from [`reports/eda_summary.json`](reports/eda_summary.json) summarize the raw cohort patterns:
 
-Training set distribution:
-
-| Class | Count |
-|-------|------:|
-| No Attrition (0) | 986 |
-| Attrition (1) | 190 |
-
-Class weights were calculated using Scikit-Learn's balanced weighting formula:
-
-```python
-weight = Total Samples / (Number of Classes × Samples in Class)
-```
-
-Where:
-
-```python
-Total Samples    = 1176
-Number of Classes = 2
-```
-
-For employees who stayed (Class 0):
-
-```python
-weight_0 = 1176 / (2 × 986)
-weight_0 = 0.596
-```
-
-For employees who left (Class 1):
-
-```python
-weight_1 = 1176 / (2 × 190)
-weight_1 = 3.095
-```
-
-Final class weights:
-
-```python
-class_weight = {
-    0: 0.596,
-    1: 3.095
-}
-```
-
-Implementation:
-
-```python
-from sklearn.linear_model import LogisticRegression
-
-log_reg = LogisticRegression(
-    penalty='l2',
-    solver='lbfgs',
-    class_weight={
-        0: 0.596,
-        1: 3.095
-    },
-    max_iter=1000,
-    random_state=42
-)
-```
-
-#### Why This Was Important
-
-Without weighting, the model would naturally favor the majority class because approximately **84% of employees stayed** with the company.
-
-By assigning a higher weight to attrition cases:
-
-- Misclassifying an employee who leaves becomes **more costly**.
-- The model pays greater attention to **minority-class observations**.
-- **Recall improves significantly.**
-- More at-risk employees are identified for potential retention actions.
-
-As a result, Logistic Regression successfully identified **36 out of 47 employees who left**, achieving a Recall of **76.6%** — the highest among all evaluated models.
-
-Attrition cases received approximately **5.2× higher importance** during training.
+- **Cohort Shape:** 1,470 employee records across 35 original fields (0 missing values, 0 duplicate records).
+- **Constant Columns Removed:** `EmployeeCount`, `Over18`, `StandardHours` (0 variance).
+- **ID Columns Excluded:** `EmployeeNumber` (unique identifier).
+- **Class Balance:** 1,233 retained (83.88%), 237 churned (16.12%), imbalance ratio = **5.203**.
+- **Top Categorical Risk Associations (Cramér's $V$ & $\chi^2$):**
+  - **OverTime:** $\chi^2 = 87.56$, $p = 8.16 \times 10^{-21}$, Cramér's $V = 0.244$ (Yes: **30.5%** vs No: **10.4%**).
+  - **JobRole:** $\chi^2 = 86.19$, $p = 2.75 \times 10^{-15}$, Cramér's $V = 0.242$ (Sales Rep: **39.8%** vs Research Director: **2.5%**).
+  - **MaritalStatus:** $\chi^2 = 46.16$, $p = 9.46 \times 10^{-11}$, Cramér's $V = 0.177$ (Single: **25.5%** vs Divorced: **10.1%**).
+  - **BusinessTravel:** $\chi^2 = 24.18$, $p = 5.61 \times 10^{-6}$, Cramér's $V = 0.128$ (Frequent Travel: **24.9%** vs Non-Travel: **8.0%**).
+- **Top Numerical Risk Associations (Mann-Whitney $U$ & Point-Biserial $r$):**
+  - **TotalWorkingYears:** Point-biserial $r = -0.171$, $p = 2.40 \times 10^{-14}$ (Mean Stay: **11.86 yrs** vs Leave: **8.24 yrs**).
+  - **JobLevel:** Point-biserial $r = -0.169$, $p = 2.96 \times 10^{-13}$ (Mean Stay: **2.15** vs Leave: **1.64**).
+  - **YearsInCurrentRole:** Point-biserial $r = -0.161$, $p = 4.43 \times 10^{-12}$ (Mean Stay: **4.48 yrs** vs Leave: **2.90 yrs**).
+  - **MonthlyIncome:** Point-biserial $r = -0.160$, $p = 2.95 \times 10^{-14}$ (Mean Stay: **$6,832** vs Leave: **$4,787**).
+  - **YearsAtCompany:** Point-biserial $r = -0.134$, $p = 2.92 \times 10^{-13}$ (Mean Stay: **7.37 yrs** vs Leave: **5.13 yrs**).
 
 ---
 
-### XGBoost — Scale Positive Weight
+## Reports & Visual Diagnostics
 
-```python
-scale_pos_weight = 986 / 190
-scale_pos_weight = 5.19
-```
+The automated pipeline generates **11 publication-grade figures** stored under [`reports/plots/`](reports/plots/). All plots are rendered below:
 
-This ensured that the minority attrition class received greater emphasis during XGBoost model training.
+### 1. Target Distribution & Demographic Breakdown
+Analysis of overall class balance, attrition proportion, age distribution, and gender breakdowns.
+![Target and Demographics](reports/plots/01_eda_target_and_demographics.png)
 
----
+### 2. Income, Tenure & Satisfaction Distributions
+Violin and box plots contrasting compensation and tenure levels between retained and departed employees.
+![Income, Tenure and Satisfaction](reports/plots/02_eda_income_tenure_satisfaction.png)
 
-## Machine Learning Models
+### 3. Interactions & Correlation Heatmaps
+Correlation matrix of high-risk factors and bivariate interactions between overtime, marital status, and stock options.
+![Interactions and Correlations](reports/plots/03_eda_interactions_and_correlations.png)
 
-The following models were trained and evaluated:
+### 4. Raw Feature Distributions & Skewness
+Distribution profiles and skewness assessment across numerical features prior to power transformations.
+![Feature Distributions](reports/plots/04_eda_feature_distributions.png)
 
-| # | Model |
-|---|-------|
-| 1 | Logistic Regression |
-| 2 | Random Forest Classifier |
-| 3 | XGBoost Classifier |
+### 5. Engineered Domain Features
+Impact of tenure ratios, compensation parity benchmarks, and fatigue indices on turnover likelihood.
+![Engineered Features](reports/plots/05_eda_engineered_features.png)
 
-### Evaluation Metrics
+### 6. Consensus Feature Importance Across Models
+Normalized importance scores comparing tree split importance, regression coefficients, and permutation impact.
+![Feature Importance Multi-Model](reports/plots/06_feature_importance_multi_model.png)
 
-| Metric | Description |
-|--------|-------------|
-| Accuracy | Overall correct predictions |
-| Precision | Of predicted leavers, how many actually left |
-| Recall | Of actual leavers, how many were correctly identified |
-| F1 Score | Harmonic mean of Precision and Recall |
-| ROC-AUC | Overall discriminative ability of the model |
+### 7. Multi-Model Performance Comparison
+Comparison of Accuracy, Recall, Precision, $F_1$, and ROC-AUC on holdout validation data.
+![Model Comparison Metrics](reports/plots/07_model_comparison_metrics.png)
 
-> **Recall** was prioritized as the primary metric, since missing an employee who actually leaves (False Negative) has greater business cost than a false alarm.
+### 8. Model Radar & Ensemble Architecture
+Trade-off radar chart across evaluation axes and schematic of the Champion Stacking ensemble.
+![Radar and Ensemble](reports/plots/08_model_comparison_radar_and_ensemble.png)
 
----
+### 9. ROC, Precision-Recall & Threshold Sweeps
+Receiver Operating Characteristic and PR curves with optimal operational threshold markers.
+![ROC and PR Curves](reports/plots/09_roc_pr_and_threshold_curves.png)
 
-## Model Performance Comparison
+### 10. Confusion Matrix Comparison
+Side-by-side confusion matrices for all evaluated models under standard vs high-recall threshold settings.
+![Confusion Matrices](reports/plots/10_confusion_matrices_comparison.png)
 
-### Test Set Metrics (Unseen Data)
-
-| Metric | Logistic Regression | Random Forest | XGBoost |
-|--------|--------------------:|--------------:|--------:|
-| Accuracy | 0.7347 | 0.8061 | 0.8061 |
-| Precision | 0.350 | **0.422** | 0.419 |
-| Recall | **0.766** | 0.574 | 0.553 |
-| F1 Score | 0.480 | **0.486** | 0.477 |
-| ROC-AUC | **0.747** | 0.712 | 0.704 |
-
-### Training Set Metrics
-
-| Metric | Logistic Regression | Random Forest | XGBoost |
-|--------|--------------------:|--------------:|--------:|
-| Accuracy | 0.7483 | 0.8640 | **0.9345** |
-| Precision | 0.3668 | 0.5630 | **0.7233** |
-| Recall | **0.7684** | 0.7053 | 0.9632 |
-| F1 Score | 0.4966 | 0.6262 | **0.8262** |
-| ROC-AUC | 0.7564 | 0.7999 | **0.9461** |
-
-> The large gap between XGBoost's training metrics (0.93+ accuracy) and test metrics (0.81) confirms significant **overfitting**. Logistic Regression shows consistent performance across both splits, indicating strong generalization.
+### 11. Calibration Curves & Demographic Subgroup Audit
+Brier score calibration reliability curves and fairness/subgroup error rate parity analysis.
+![Calibration and Subgroup Audit](reports/plots/11_calibration_and_subgroup_audit.png)
 
 ---
 
-### Logistic Regression
+## Model Metadata (`model_metadata.json`)
 
-| Split | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-|-------|--------:|---------:|-------:|--------:|--------:|
-| Training | 0.7483 | 0.3668 | 0.7684 | 0.4966 | 0.756 |
-| Testing | 0.7347 | 0.3500 | 0.7660 | 0.4800 | 0.747 |
-| **Gap** | **0.0136** | **0.0168** | **0.0024** | **0.0166** | **0.009** |
-
-**Strengths**
-- Highest ROC-AUC score on test data
-- Highest Recall — catches most at-risk employees
-- Minimal gap between train and test scores (no overfitting)
-- Highly interpretable for HR stakeholders
+The file [`models/model_metadata.json`](models/model_metadata.json) serves as the **single source of truth** for model reproducibility and system transparency. It records:
+- **Environment & Package Versions:** Python 3.14.10, Scikit-Learn 1.9.0, XGBoost 3.3.0, NumPy 2.5.0, Pandas 3.0.3.
+- **Pipeline Hyperparameters:** Best parameters found for all 6 models via randomized search.
+- **Ensemble Coefficients:** Stacking meta-learner weights and soft-voting weights.
+- **Cross-Validation Logs:** 10-fold Out-Of-Fold ROC-AUC, PR-AUC, Log-Loss, and runtime benchmarks.
+- **Holdout Test Confusion Matrices:** Exact True Negatives, False Positives, False Negatives, and True Positives for both threshold modes.
+- **Consensus Feature Drivers:** Top positive and negative coefficients enabling plain-language explanations in the web UI.
 
 ---
 
-### Random Forest
+## Client-Side Web Application (`web/`)
 
-| Split | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-|-------|--------:|---------:|-------:|--------:|--------:|
-| Training | 0.8640 | 0.5630 | 0.7053 | 0.6262 | 0.800 |
-| Testing | 0.8061 | 0.4219 | 0.5745 | 0.4865 | 0.712 |
-| **Gap** | **0.0579** | **0.1411** | **0.1308** | **0.1397** | **0.088** |
-
-**Strengths**
-- Highest Precision on test data
-- Good overall accuracy
-
-**Limitations**
-- Missed more attrition cases than Logistic Regression
-- Moderate overfitting observed (train-test gap in recall: ~0.13)
+The web frontend located in [`web/`](web/) is a standalone React 19 application configured for seamless static hosting:
+- **Client-Side TensorFlow.js Engine:** Loads `preprocessor.json` and distilled MLP topologies (`models/tfjs/`) to compute instant retention scores directly on the user's CPU/GPU.
+- **Non-Technical Interface:** Designed so that any non-technical manager can evaluate a worker without encountering ML jargon. Ratings are intuitive plain words (*Unhappy*, *Okay*, *Happy*, *Very happy*).
+- **Interactive GSAP Retention Dial:** Real-time animated needle and probability sweep with instant feedback.
+- **3 Signs at a Glance:** Visual status meters for *Daily happiness*, *Pay vs teammates*, and *Hours and strain*.
+- **Managerial Action Playbook:** Automatically suggests prioritized retention steps (*e.g., reallocate overtime, schedule 1-on-1 check-in, review market salary*).
+- **Second Opinion (4 Checks):** Collapsible drawer showing consensus across *Main result*, *Everyday balance check*, *Stress-pair check*, and *Extra-careful check*.
 
 ---
 
-### XGBoost
+## How to Run Locally
 
-| Split | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-|-------|--------:|---------:|-------:|--------:|--------:|
-| Training | 0.9345 | 0.7233 | 0.9632 | 0.8262 | 0.946 |
-| Testing | 0.8061 | 0.4194 | 0.5532 | 0.4771 | 0.704 |
-| **Gap** | **0.1284** | **0.3039** | **0.4100** | **0.3491** | **0.242** |
+### 1. Python ML Pipeline & Notebooks
 
-**Strengths**
-- Competitive performance
-- Strong gradient boosting capability
-
-**Limitations**
-- Significant overfitting observed (train recall 0.963 vs test recall 0.553)
-- Did not outperform Logistic Regression on unseen data
-
----
-
-## Confusion Matrix Summary
-
-| Metric | Logistic Regression | Random Forest | XGBoost |
-|--------|--------------------:|--------------:|--------:|
-| True Negatives (TN) | 180 | 210 | 211 |
-| False Positives (FP) | 67 | 37 | 36 |
-| False Negatives (FN) | **11** | 20 | 21 |
-| True Positives (TP) | **36** | 27 | 26 |
-
-Logistic Regression produced the **fewest False Negatives (11)**, meaning it missed the fewest actual attrition cases — the most critical error type in this business context.
-
----
-
-## Final Model Selection
-
-### ✅ Selected: Logistic Regression
-
-Although Random Forest and XGBoost achieved higher accuracy, **Logistic Regression** was selected as the final model because:
-
-| Criterion | Value |
-|-----------|-------|
-| ROC-AUC | **0.747** (highest) |
-| Recall | **76.6%** (highest) |
-| False Negatives | **11** (lowest) |
-| Interpretability | High — suitable for HR reporting |
-| Overfitting | Minimal |
-
-> In an HR context, identifying as many at-risk employees as possible (high Recall) is more valuable than high Accuracy, which can be misleadingly inflated by the majority class.
-
----
-
-## Business Insights & Recommendations
-
-### Key Drivers of Attrition
-
-| Driver | Observation |
-|--------|-------------|
-| Overtime | Employees working overtime are significantly more likely to leave |
-| Monthly Income | Lower-paid employees leave more frequently |
-| Age | Younger employees show higher turnover |
-| Job Satisfaction | Low satisfaction strongly predicts attrition |
-| Tenure | Newer employees are at higher risk |
-| Job Role | Sales Reps, Lab Technicians, HR staff are highest-risk |
-
-### Recommendations
-
-#### Reduce Excessive Overtime
-Monitor workload distribution and promote work-life balance initiatives to reduce burnout.
-
-#### Improve Compensation Strategies
-Conduct salary benchmarking and periodic compensation reviews to stay competitive.
-
-#### Strengthen Career Development
-Provide structured career progression paths and internal mobility programs for early-career employees.
-
-#### Focus on High-Risk Roles
-Develop targeted retention programs specifically for:
-- Sales Representatives
-- Laboratory Technicians
-- Human Resources Employees
-
-#### Improve Employee Engagement
-Deploy regular satisfaction surveys and feedback programs to detect disengagement early — before resignation occurs.
-
----
-
-## Limitations
-
-- **False Positives** may result in unnecessary retention efforts being directed at employees not planning to leave.
-- **Some attrition cases remain unidentified** (False Negatives) due to the inherent trade-off between Recall and Precision.
-- **External factors** such as organizational culture, job market conditions, and macroeconomic variables were not available in the dataset.
-- **Model drift** may occur as employee behavior and company conditions change over time — requiring periodic retraining.
-- **Predictions should support HR decisions**, not replace human judgment.
-
----
-
-## Technologies Used
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge)
-![Seaborn](https://img.shields.io/badge/Seaborn-4C72B0?style=for-the-badge)
-![scikit-learn](https://img.shields.io/badge/scikit_learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![XGBoost](https://img.shields.io/badge/XGBoost-000000?style=for-the-badge)
-![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
-![Jupyter Notebook](https://img.shields.io/badge/Jupyter-F37626.svg?style=for-the-badge&logo=Jupyter&logoColor=white)
-
-### Versions
-
-| Library | Version |
-|---------|---------|
-| streamlit | 1.58.0 |
-| pandas | 3.0.3 |
-| numpy | 2.5.0 |
-| scikit-learn | 1.9.0 |
-| xgboost | 3.3.0 |
-| joblib | 1.5.3 |
-| plotly | 5.18.0 |
-| matplotlib | 3.11.0 |
-| seaborn | 0.13.2 |
-
----
-
-## How to Run
-
-### 1. Clone the Repository
+Clone the repository and set up a virtual environment:
 
 ```bash
-git clone https://github.com/your-username/Employee-Attrition-Prediction.git
-cd Employee-Attrition-Prediction
-```
+git clone https://github.com/alokprasad573/TalentPulse.git
+cd TalentPulse
 
-### 2. Create a Virtual Environment
-
-```bash
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # macOS / Linux
-```
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
 
-### 3. Install Dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the Streamlit App
+To run the automated 7-stage ML training pipeline:
 
 ```bash
-streamlit run app.py
+python train_pipeline.py
 ```
 
-### 5. Explore the Notebooks
+To re-export TensorFlow.js browser weights:
 
-Open the notebooks in the `notebooks/` directory using Jupyter:
+```bash
+python export_tfjs.py
+```
+
+To explore Jupyter Notebooks:
 
 ```bash
 jupyter notebook
 ```
 
-| Notebook | Purpose |
-|----------|---------|
-| `EDA.ipynb` | Exploratory Data Analysis |
-| `TRAINING.ipynb` | Model training & evaluation |
-| `REPORT.ipynb` | Final analysis report |
+### 2. React + TensorFlow.js Web Application
+
+Navigate to the `web/` directory:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` in your browser.
+
+To build the optimized production bundle:
+
+```bash
+npm run build
+```
 
 ---
 
-## Conclusion
+## Vercel Deployment Guide
 
-This project successfully developed an **employee attrition prediction system** capable of identifying employees at risk of leaving the organization.
+TalentPulse is fully pre-configured for static edge deployment on **Vercel** with zero server-side Python overhead:
 
-The analysis revealed that **overtime, compensation, age, job satisfaction, and tenure** are the strongest drivers of attrition. Among all evaluated models, **Logistic Regression** provided the best balance of predictive performance, generalization capability, and interpretability — identifying **76.6% of employees who left** while remaining easy to explain to non-technical HR stakeholders.
+1. **Root `vercel.json` Configuration:** Automatically instructs Vercel to install web dependencies (`npm --prefix web ci`), build the bundle (`npm --prefix web run build`), and serve from `web/dist`.
+2. **Static Asset Caching:** Models and assets are served with immutable 1-year cache headers (`Cache-Control: public, max-age=31536000, immutable`).
+3. **Deployment Steps:**
+   - Push your changes to GitHub.
+   - Import the repository in [Vercel Dashboard](https://vercel.com/new).
+   - Vercel will auto-detect the root `vercel.json` and deploy immediately.
+   - Or deploy via CLI:
+     ```bash
+     npx vercel --prod
+     ```
 
-The resulting solution can serve as an **early-warning system** to help HR teams proactively improve retention and reduce employee turnover costs.
+---
+
+## License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for complete details.
+
+---
+
+## Author
+
+**Made with love by Alok Prasad**  
+*Machine Learning Engineer & Full-Stack Developer*  
+GitHub: [@alokprasad573](https://github.com/alokprasad573)
