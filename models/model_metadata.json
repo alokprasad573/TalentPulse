@@ -1,0 +1,825 @@
+{
+  "generated_at": "2026-11-25T00:30:58.038475",
+  "versions": {
+    "python": "3.14.10",
+    "numpy": "2.5.0",
+    "pandas": "3.0.3",
+    "scikit_learn": "1.9.0",
+    "xgboost": "3.3.0",
+    "joblib": "1.5.3"
+  },
+  "config": {
+    "seed": 42,
+    "hpo_folds": 5,
+    "oof_folds": 10,
+    "n_iter": 30,
+    "train_rows": 1176,
+    "test_rows": 294,
+    "engineered_feature_count": 80,
+    "hardcoded_class_weight_lr_rf": {
+      "0": 0.596349,
+      "1": 3.094737
+    }
+  },
+  "champion_model": "Stacking Ensemble",
+  "ensemble_weights": {
+    "lr": 0.02189223805523134,
+    "rf": 0.020000000000000004,
+    "xgb": 0.2748207294689644,
+    "et": 0.02000000000000004,
+    "gb": 0.2630264563664054,
+    "svc": 0.40026057610939886
+  },
+  "stacking_meta_coefs": {
+    "lr": 2.794855781927317,
+    "rf": -1.1547537668292576,
+    "xgb": 1.5844251288956552,
+    "et": -1.3066220401583863,
+    "gb": 1.254793236881056,
+    "svc": 2.9312313450389698
+  },
+  "optimal_thresholds": {
+    "Logistic Regression": {
+      "balanced_f1": 0.735,
+      "hr_high_recall": 0.64
+    },
+    "Random Forest": {
+      "balanced_f1": 0.535,
+      "hr_high_recall": 0.4
+    },
+    "XGBoost": {
+      "balanced_f1": 0.365,
+      "hr_high_recall": 0.26
+    },
+    "Extra Trees": {
+      "balanced_f1": 0.255,
+      "hr_high_recall": 0.245
+    },
+    "Gradient Boosting": {
+      "balanced_f1": 0.305,
+      "hr_high_recall": 0.25
+    },
+    "Calibrated RBF-SVC": {
+      "balanced_f1": 0.315,
+      "hr_high_recall": 0.23
+    },
+    "Core-3 Voting Ensemble": {
+      "balanced_f1": 0.395,
+      "hr_high_recall": 0.26
+    },
+    "Weighted Soft-Vote Ensemble": {
+      "balanced_f1": 0.3,
+      "hr_high_recall": 0.26
+    },
+    "Stacking Ensemble": {
+      "balanced_f1": 0.33,
+      "hr_high_recall": 0.245
+    }
+  },
+  "hpo_best_params": {
+    "Logistic Regression": {
+      "C": 0.0166,
+      "l1_ratio": 0.0,
+      "solver": "lbfgs",
+      "class_weight": {
+        "0": 0.5963,
+        "1": 3.0947
+      }
+    },
+    "Random Forest": {
+      "criterion": "entropy",
+      "max_depth": 16,
+      "max_features": "log2",
+      "min_samples_leaf": 1,
+      "min_samples_split": 12,
+      "n_estimators": 449,
+      "class_weight": {
+        "0": 0.5963,
+        "1": 3.0947
+      }
+    },
+    "XGBoost": {
+      "colsample_bytree": 0.4361,
+      "gamma": 2.3057,
+      "learning_rate": 0.0416,
+      "max_depth": 5,
+      "min_child_weight": 9,
+      "n_estimators": 456,
+      "reg_alpha": 0.5305,
+      "reg_lambda": 0.5506,
+      "scale_pos_weight": 1.0,
+      "subsample": 0.7408
+    },
+    "Extra Trees": {
+      "class_weight": null,
+      "criterion": "gini",
+      "max_depth": 10,
+      "max_features": 0.35,
+      "min_samples_leaf": 3,
+      "min_samples_split": 12,
+      "n_estimators": 283
+    },
+    "Gradient Boosting": {
+      "learning_rate": 0.045,
+      "max_depth": 2,
+      "max_features": "log2",
+      "min_samples_leaf": 12,
+      "n_estimators": 334,
+      "subsample": 0.6018
+    },
+    "Calibrated RBF-SVC": {
+      "estimator__C": 2.0014,
+      "estimator__class_weight": null,
+      "estimator__gamma": 0.005
+    },
+    "Stacking Ensemble": {
+      "meta_estimator": "LogisticRegression",
+      "meta_C": 1.5,
+      "cv": 5
+    }
+  },
+  "oof_cv_metrics": {
+    "Logistic Regression": {
+      "oof_roc_auc": 0.8543183516600832,
+      "fold_roc_auc_mean": 0.8587323286571408,
+      "fold_roc_auc_std": 0.06791455532341714,
+      "oof_pr_auc": 0.6770030492062971,
+      "oof_log_loss": 0.43673960178568094,
+      "cv_seconds": 0.16
+    },
+    "Random Forest": {
+      "oof_roc_auc": 0.8325237536030746,
+      "fold_roc_auc_mean": 0.838353459406091,
+      "fold_roc_auc_std": 0.0586287823541689,
+      "oof_pr_auc": 0.5931836051539001,
+      "oof_log_loss": 0.40021545607676684,
+      "cv_seconds": 7.94
+    },
+    "XGBoost": {
+      "oof_roc_auc": 0.8458738123198463,
+      "fold_roc_auc_mean": 0.846816717117469,
+      "fold_roc_auc_std": 0.056655141889567016,
+      "oof_pr_auc": 0.6626581515715346,
+      "oof_log_loss": 0.3046250927885821,
+      "cv_seconds": 0.64
+    },
+    "Extra Trees": {
+      "oof_roc_auc": 0.8252535496957403,
+      "fold_roc_auc_mean": 0.8293536872484241,
+      "fold_roc_auc_std": 0.05011713753396609,
+      "oof_pr_auc": 0.5717526806235557,
+      "oof_log_loss": 0.3308944925521164,
+      "cv_seconds": 4.29
+    },
+    "Gradient Boosting": {
+      "oof_roc_auc": 0.8452439414967439,
+      "fold_roc_auc_mean": 0.8475924660135187,
+      "fold_roc_auc_std": 0.06190211577719062,
+      "oof_pr_auc": 0.6525382846002404,
+      "oof_log_loss": 0.30431502842881797,
+      "cv_seconds": 4.21
+    },
+    "Calibrated RBF-SVC": {
+      "oof_roc_auc": 0.8491726273086367,
+      "fold_roc_auc_mean": 0.8532429558745347,
+      "fold_roc_auc_std": 0.06002621107983923,
+      "oof_pr_auc": 0.6697531028825193,
+      "oof_log_loss": 0.2974627960545719,
+      "cv_seconds": 0.36
+    },
+    "Core-3 Voting Ensemble": {
+      "oof_roc_auc": 0.8494074943952171,
+      "fold_roc_auc_mean": 0.8520603456693682,
+      "fold_roc_auc_std": 0.05881238566272959,
+      "oof_pr_auc": 0.6678239429577254,
+      "oof_log_loss": 0.30300822064144106,
+      "cv_seconds": 79.68
+    },
+    "Weighted Soft-Vote Ensemble": {
+      "oof_roc_auc": 0.8522846162058288,
+      "fold_roc_auc_mean": 0.8555436209571547,
+      "fold_roc_auc_std": 0.060168902585968013,
+      "oof_pr_auc": 0.6734340869861932,
+      "oof_log_loss": 0.296343050086658,
+      "cv_seconds": 159.3
+    },
+    "Stacking Ensemble": {
+      "oof_roc_auc": 0.852652930500694,
+      "fold_roc_auc_mean": 0.8618098275993011,
+      "fold_roc_auc_std": 0.06259056395567612,
+      "oof_pr_auc": 0.6869275024002385,
+      "oof_log_loss": 0.28890056590694685,
+      "cv_seconds": 130.18
+    }
+  },
+  "train_metrics_balanced_f1": {
+    "Logistic Regression": {
+      "threshold": 0.735,
+      "accuracy": 0.9056122448979592,
+      "precision": 0.7762237762237763,
+      "recall": 0.5842105263157895,
+      "f1": 0.6666666666666666,
+      "f1_5": 0.6323400525854513,
+      "roc_auc": 0.8887530692857906,
+      "pr_auc": 0.7315541439587024,
+      "log_loss": 0.4117338432569513,
+      "brier": 0.13053695487602954,
+      "tn": 954,
+      "fp": 32,
+      "fn": 79,
+      "tp": 111
+    },
+    "Random Forest": {
+      "threshold": 0.535,
+      "accuracy": 0.9795918367346939,
+      "precision": 0.8878504672897196,
+      "recall": 1.0,
+      "f1": 0.9405940594059405,
+      "f1_5": 0.9625876851130164,
+      "roc_auc": 0.9993274260702466,
+      "pr_auc": 0.9962027590186004,
+      "log_loss": 0.24227200829566573,
+      "brier": 0.05687330899890843,
+      "tn": 962,
+      "fp": 24,
+      "fn": 0,
+      "tp": 190
+    },
+    "XGBoost": {
+      "threshold": 0.365,
+      "accuracy": 0.9328231292517006,
+      "precision": 0.8208092485549133,
+      "recall": 0.7473684210526316,
+      "f1": 0.7823691460055097,
+      "f1_5": 0.768526228143214,
+      "roc_auc": 0.9599284722963595,
+      "pr_auc": 0.8825811277282738,
+      "log_loss": 0.19523683190345764,
+      "brier": 0.05414898693561554,
+      "tn": 955,
+      "fp": 31,
+      "fn": 48,
+      "tp": 142
+    },
+    "Extra Trees": {
+      "threshold": 0.255,
+      "accuracy": 0.9583333333333334,
+      "precision": 0.821917808219178,
+      "recall": 0.9473684210526315,
+      "f1": 0.8801955990220048,
+      "f1_5": 0.9048723897911833,
+      "roc_auc": 0.9934237215757447,
+      "pr_auc": 0.9676974575066809,
+      "log_loss": 0.16361016046964413,
+      "brier": 0.042236471466849355,
+      "tn": 947,
+      "fp": 39,
+      "fn": 10,
+      "tp": 180
+    },
+    "Gradient Boosting": {
+      "threshold": 0.305,
+      "accuracy": 0.9200680272108843,
+      "precision": 0.7696629213483146,
+      "recall": 0.7210526315789474,
+      "f1": 0.7445652173913043,
+      "f1_5": 0.7353426919900908,
+      "roc_auc": 0.9437386569872958,
+      "pr_auc": 0.852439397521729,
+      "log_loss": 0.2159460116140315,
+      "brier": 0.059879345779016595,
+      "tn": 945,
+      "fp": 41,
+      "fn": 53,
+      "tp": 137
+    },
+    "Calibrated RBF-SVC": {
+      "threshold": 0.315,
+      "accuracy": 0.9243197278911565,
+      "precision": 0.821656050955414,
+      "recall": 0.6789473684210526,
+      "f1": 0.7435158501440923,
+      "f1_5": 0.7172797262617622,
+      "roc_auc": 0.9141400661898152,
+      "pr_auc": 0.8137455484369814,
+      "log_loss": 0.23240815041754617,
+      "brier": 0.06406197933311526,
+      "tn": 958,
+      "fp": 28,
+      "fn": 61,
+      "tp": 129
+    },
+    "Core-3 Voting Ensemble": {
+      "threshold": 0.395,
+      "accuracy": 0.9328231292517006,
+      "precision": 0.8171428571428572,
+      "recall": 0.7526315789473684,
+      "f1": 0.7835616438356164,
+      "f1_5": 0.7713692946058092,
+      "roc_auc": 0.9573129070139853,
+      "pr_auc": 0.8773881625081285,
+      "log_loss": 0.20827898395746844,
+      "brier": 0.05595054945179086,
+      "tn": 954,
+      "fp": 32,
+      "fn": 47,
+      "tp": 143
+    },
+    "Weighted Soft-Vote Ensemble": {
+      "threshold": 0.3,
+      "accuracy": 0.9251700680272109,
+      "precision": 0.7833333333333333,
+      "recall": 0.7421052631578947,
+      "f1": 0.7621621621621621,
+      "f1_5": 0.754320987654321,
+      "roc_auc": 0.9522419130991779,
+      "pr_auc": 0.8648411818147852,
+      "log_loss": 0.21106904184116218,
+      "brier": 0.05768217558123797,
+      "tn": 947,
+      "fp": 39,
+      "fn": 49,
+      "tp": 141
+    },
+    "Stacking Ensemble": {
+      "threshold": 0.33,
+      "accuracy": 0.9081632653061225,
+      "precision": 0.759493670886076,
+      "recall": 0.631578947368421,
+      "f1": 0.6896551724137931,
+      "f1_5": 0.6660973526900086,
+      "roc_auc": 0.8364631151916302,
+      "pr_auc": 0.7345478160258218,
+      "log_loss": 0.27529335438387154,
+      "brier": 0.07327525836688957,
+      "tn": 948,
+      "fp": 38,
+      "fn": 70,
+      "tp": 120
+    }
+  },
+  "test_metrics_balanced_f1": {
+    "Logistic Regression": {
+      "threshold": 0.735,
+      "accuracy": 0.8809523809523809,
+      "precision": 0.6875,
+      "recall": 0.46808510638297873,
+      "f1": 0.5569620253164557,
+      "f1_5": 0.5190562613430127,
+      "roc_auc": 0.8339219571022481,
+      "pr_auc": 0.5961388519517604,
+      "log_loss": 0.46337834085725543,
+      "brier": 0.1462192917208823,
+      "tn": 237,
+      "fp": 10,
+      "fn": 25,
+      "tp": 22
+    },
+    "Random Forest": {
+      "threshold": 0.535,
+      "accuracy": 0.8367346938775511,
+      "precision": 0.49056603773584906,
+      "recall": 0.5531914893617021,
+      "f1": 0.52,
+      "f1_5": 0.5322834645669291,
+      "roc_auc": 0.7976569902661728,
+      "pr_auc": 0.48661744083395214,
+      "log_loss": 0.4276016042688215,
+      "brier": 0.13306463312425626,
+      "tn": 220,
+      "fp": 27,
+      "fn": 21,
+      "tp": 26
+    },
+    "XGBoost": {
+      "threshold": 0.365,
+      "accuracy": 0.8605442176870748,
+      "precision": 0.5714285714285714,
+      "recall": 0.5106382978723404,
+      "f1": 0.5393258426966292,
+      "f1_5": 0.5279187817258884,
+      "roc_auc": 0.8058402963218193,
+      "pr_auc": 0.5117603970572467,
+      "log_loss": 0.35191506147384644,
+      "brier": 0.1050022765994072,
+      "tn": 229,
+      "fp": 18,
+      "fn": 23,
+      "tp": 24
+    },
+    "Extra Trees": {
+      "threshold": 0.255,
+      "accuracy": 0.8367346938775511,
+      "precision": 0.49056603773584906,
+      "recall": 0.5531914893617021,
+      "f1": 0.52,
+      "f1_5": 0.5322834645669291,
+      "roc_auc": 0.8011887328796623,
+      "pr_auc": 0.5328305768777196,
+      "log_loss": 0.35202961500617475,
+      "brier": 0.10325005925622045,
+      "tn": 220,
+      "fp": 27,
+      "fn": 21,
+      "tp": 26
+    },
+    "Gradient Boosting": {
+      "threshold": 0.305,
+      "accuracy": 0.8639455782312925,
+      "precision": 0.5853658536585366,
+      "recall": 0.5106382978723404,
+      "f1": 0.5454545454545454,
+      "f1_5": 0.5315161839863713,
+      "roc_auc": 0.8172969247997244,
+      "pr_auc": 0.5533063017659944,
+      "log_loss": 0.33811270469683313,
+      "brier": 0.10082900685286453,
+      "tn": 230,
+      "fp": 17,
+      "fn": 23,
+      "tp": 24
+    },
+    "Calibrated RBF-SVC": {
+      "threshold": 0.315,
+      "accuracy": 0.8571428571428571,
+      "precision": 0.5555555555555556,
+      "recall": 0.5319148936170213,
+      "f1": 0.5434782608695652,
+      "f1_5": 0.538971807628524,
+      "roc_auc": 0.8349556378671721,
+      "pr_auc": 0.5490899564777092,
+      "log_loss": 0.3405546907657427,
+      "brier": 0.10284811152951749,
+      "tn": 227,
+      "fp": 20,
+      "fn": 22,
+      "tp": 25
+    },
+    "Core-3 Voting Ensemble": {
+      "threshold": 0.395,
+      "accuracy": 0.8571428571428571,
+      "precision": 0.5581395348837209,
+      "recall": 0.5106382978723404,
+      "f1": 0.5333333333333333,
+      "f1_5": 0.5243697478991597,
+      "roc_auc": 0.8121285209751056,
+      "pr_auc": 0.522340739269512,
+      "log_loss": 0.3450784599693654,
+      "brier": 0.10371762311413932,
+      "tn": 228,
+      "fp": 19,
+      "fn": 23,
+      "tp": 24
+    },
+    "Weighted Soft-Vote Ensemble": {
+      "threshold": 0.3,
+      "accuracy": 0.8605442176870748,
+      "precision": 0.56,
+      "recall": 0.5957446808510638,
+      "f1": 0.5773195876288659,
+      "f1_5": 0.5842696629213483,
+      "roc_auc": 0.8284089930226549,
+      "pr_auc": 0.5492203306174054,
+      "log_loss": 0.3325330447845494,
+      "brier": 0.10041049631961013,
+      "tn": 225,
+      "fp": 22,
+      "fn": 19,
+      "tp": 28
+    },
+    "Stacking Ensemble": {
+      "threshold": 0.33,
+      "accuracy": 0.8605442176870748,
+      "precision": 0.5714285714285714,
+      "recall": 0.5106382978723404,
+      "f1": 0.5393258426966292,
+      "f1_5": 0.5279187817258884,
+      "roc_auc": 0.8345249375484538,
+      "pr_auc": 0.562643183612584,
+      "log_loss": 0.3301167866284342,
+      "brier": 0.098567237266292,
+      "tn": 229,
+      "fp": 18,
+      "fn": 23,
+      "tp": 24
+    }
+  },
+  "test_metrics_hr_recall": {
+    "Logistic Regression": {
+      "threshold": 0.64,
+      "accuracy": 0.8673469387755102,
+      "precision": 0.5833333333333334,
+      "recall": 0.5957446808510638,
+      "f1": 0.5894736842105263,
+      "f1_5": 0.591869918699187,
+      "roc_auc": 0.8339219571022481,
+      "pr_auc": 0.5961388519517604,
+      "log_loss": 0.46337834085725543,
+      "brier": 0.1462192917208823,
+      "tn": 227,
+      "fp": 20,
+      "fn": 19,
+      "tp": 28
+    },
+    "Random Forest": {
+      "threshold": 0.4,
+      "accuracy": 0.7857142857142857,
+      "precision": 0.4024390243902439,
+      "recall": 0.7021276595744681,
+      "f1": 0.5116279069767442,
+      "f1_5": 0.5712383488681758,
+      "roc_auc": 0.7976569902661728,
+      "pr_auc": 0.48661744083395214,
+      "log_loss": 0.4276016042688215,
+      "brier": 0.13306463312425626,
+      "tn": 198,
+      "fp": 49,
+      "fn": 14,
+      "tp": 33
+    },
+    "XGBoost": {
+      "threshold": 0.26,
+      "accuracy": 0.8435374149659864,
+      "precision": 0.5084745762711864,
+      "recall": 0.6382978723404256,
+      "f1": 0.5660377358490566,
+      "f1_5": 0.5918057663125948,
+      "roc_auc": 0.8058402963218193,
+      "pr_auc": 0.5117603970572467,
+      "log_loss": 0.35191506147384644,
+      "brier": 0.1050022765994072,
+      "tn": 218,
+      "fp": 29,
+      "fn": 17,
+      "tp": 30
+    },
+    "Extra Trees": {
+      "threshold": 0.245,
+      "accuracy": 0.8367346938775511,
+      "precision": 0.4909090909090909,
+      "recall": 0.574468085106383,
+      "f1": 0.5294117647058824,
+      "f1_5": 0.5458786936236392,
+      "roc_auc": 0.8011887328796623,
+      "pr_auc": 0.5328305768777196,
+      "log_loss": 0.35202961500617475,
+      "brier": 0.10325005925622045,
+      "tn": 219,
+      "fp": 28,
+      "fn": 20,
+      "tp": 27
+    },
+    "Gradient Boosting": {
+      "threshold": 0.25,
+      "accuracy": 0.8469387755102041,
+      "precision": 0.5185185185185185,
+      "recall": 0.5957446808510638,
+      "f1": 0.5544554455445545,
+      "f1_5": 0.5696400625978091,
+      "roc_auc": 0.8172969247997244,
+      "pr_auc": 0.5533063017659944,
+      "log_loss": 0.33811270469683313,
+      "brier": 0.10082900685286453,
+      "tn": 221,
+      "fp": 26,
+      "fn": 19,
+      "tp": 28
+    },
+    "Calibrated RBF-SVC": {
+      "threshold": 0.23,
+      "accuracy": 0.8401360544217688,
+      "precision": 0.5,
+      "recall": 0.5957446808510638,
+      "f1": 0.5436893203883495,
+      "f1_5": 0.5625965996908809,
+      "roc_auc": 0.8349556378671721,
+      "pr_auc": 0.5490899564777092,
+      "log_loss": 0.3405546907657427,
+      "brier": 0.10284811152951749,
+      "tn": 219,
+      "fp": 28,
+      "fn": 19,
+      "tp": 28
+    },
+    "Core-3 Voting Ensemble": {
+      "threshold": 0.26,
+      "accuracy": 0.8299319727891157,
+      "precision": 0.47692307692307695,
+      "recall": 0.6595744680851063,
+      "f1": 0.5535714285714286,
+      "f1_5": 0.5900439238653001,
+      "roc_auc": 0.8121285209751056,
+      "pr_auc": 0.522340739269512,
+      "log_loss": 0.3450784599693654,
+      "brier": 0.10371762311413932,
+      "tn": 213,
+      "fp": 34,
+      "fn": 16,
+      "tp": 31
+    },
+    "Weighted Soft-Vote Ensemble": {
+      "threshold": 0.26,
+      "accuracy": 0.8571428571428571,
+      "precision": 0.543859649122807,
+      "recall": 0.6595744680851063,
+      "f1": 0.5961538461538461,
+      "f1_5": 0.6190476190476191,
+      "roc_auc": 0.8284089930226549,
+      "pr_auc": 0.5492203306174054,
+      "log_loss": 0.3325330447845494,
+      "brier": 0.10041049631961013,
+      "tn": 221,
+      "fp": 26,
+      "fn": 16,
+      "tp": 31
+    },
+    "Stacking Ensemble": {
+      "threshold": 0.245,
+      "accuracy": 0.8571428571428571,
+      "precision": 0.5490196078431373,
+      "recall": 0.5957446808510638,
+      "f1": 0.5714285714285714,
+      "f1_5": 0.580542264752791,
+      "roc_auc": 0.8345249375484538,
+      "pr_auc": 0.562643183612584,
+      "log_loss": 0.3301167866284342,
+      "brier": 0.098567237266292,
+      "tn": 224,
+      "fp": 23,
+      "fn": 19,
+      "tp": 28
+    }
+  },
+  "subgroup_audit": {
+    "Department": [
+      {
+        "group": "Human Resources",
+        "n": 15,
+        "actual_yes": 2,
+        "roc_auc": 0.8846,
+        "recall": 0.5,
+        "precision": 0.5
+      },
+      {
+        "group": "Research & Development",
+        "n": 197,
+        "actual_yes": 29,
+        "roc_auc": 0.7843,
+        "recall": 0.4483,
+        "precision": 0.5
+      },
+      {
+        "group": "Sales",
+        "n": 82,
+        "actual_yes": 16,
+        "roc_auc": 0.9309,
+        "recall": 0.875,
+        "precision": 0.6087
+      }
+    ],
+    "OverTime": [
+      {
+        "group": "No",
+        "n": 218,
+        "actual_yes": 17,
+        "roc_auc": 0.7091,
+        "recall": 0.2941,
+        "precision": 0.2778
+      },
+      {
+        "group": "Yes",
+        "n": 76,
+        "actual_yes": 30,
+        "roc_auc": 0.8551,
+        "recall": 0.7667,
+        "precision": 0.697
+      }
+    ],
+    "Gender": [
+      {
+        "group": "Female",
+        "n": 116,
+        "actual_yes": 16,
+        "roc_auc": 0.81,
+        "recall": 0.5625,
+        "precision": 0.5294
+      },
+      {
+        "group": "Male",
+        "n": 178,
+        "actual_yes": 31,
+        "roc_auc": 0.8521,
+        "recall": 0.6129,
+        "precision": 0.5588
+      }
+    ],
+    "MaritalStatus": [
+      {
+        "group": "Divorced",
+        "n": 64,
+        "actual_yes": 4,
+        "roc_auc": 0.9583,
+        "recall": 0.75,
+        "precision": 0.4286
+      },
+      {
+        "group": "Married",
+        "n": 133,
+        "actual_yes": 18,
+        "roc_auc": 0.8068,
+        "recall": 0.4444,
+        "precision": 0.4706
+      },
+      {
+        "group": "Single",
+        "n": 97,
+        "actual_yes": 25,
+        "roc_auc": 0.7922,
+        "recall": 0.68,
+        "precision": 0.6296
+      }
+    ]
+  },
+  "feature_names": [
+    "num__Age",
+    "num__DistanceFromHome",
+    "num__Education",
+    "num__EnvironmentSatisfaction",
+    "num__JobInvolvement",
+    "num__JobLevel",
+    "num__JobSatisfaction",
+    "num__MonthlyIncome",
+    "num__NumCompaniesWorked",
+    "num__PercentSalaryHike",
+    "num__PerformanceRating",
+    "num__RelationshipSatisfaction",
+    "num__StockOptionLevel",
+    "num__TotalWorkingYears",
+    "num__TrainingTimesLastYear",
+    "num__WorkLifeBalance",
+    "num__YearsAtCompany",
+    "num__YearsInCurrentRole",
+    "num__YearsSinceLastPromotion",
+    "num__YearsWithCurrManager",
+    "num__TravelScore",
+    "num__LogMonthlyIncome",
+    "num__LogDistanceFromHome",
+    "num__LogYearsAtCompany",
+    "num__LogTotalWorkingYears",
+    "num__LogYearsSinceLastPromotion",
+    "num__TotalSatisfaction",
+    "num__EngagementScore",
+    "num__MinSatisfaction",
+    "num__LowSatisfactionCount",
+    "num__IncomePerYearExp",
+    "num__IncomePerAge",
+    "num__IncomePerJobLevel",
+    "num__TenureRatio",
+    "num__PromotionStagnation",
+    "num__RoleStagnation",
+    "num__ManagerLoyaltyRatio",
+    "num__AvgYearsPerCompany",
+    "num__CareerStartAge",
+    "num__JobHopperRate",
+    "num__YearsWithoutPromoGap",
+    "num__IncomeVsRoleMedian",
+    "num__IncomeVsLevelMedian",
+    "num__IncomeVsDeptMedian",
+    "num__TenureVsRoleMedian",
+    "num__NoStockOptions",
+    "num__IsNewHire",
+    "num__OverTime_x_Single",
+    "num__OverTime_x_NoStock",
+    "num__OverTime_x_FreqTravel",
+    "num__OverTime_x_LowSat",
+    "num__OverTime_x_LowIncome",
+    "num__OverTime_x_Distance",
+    "num__OverTime_x_NewHire",
+    "num__Single_x_NoStock",
+    "num__BurnoutIndex",
+    "cat__BusinessTravel_Travel_Frequently",
+    "cat__BusinessTravel_Travel_Rarely",
+    "cat__Department_Research & Development",
+    "cat__Department_Sales",
+    "cat__EducationField_Life Sciences",
+    "cat__EducationField_Marketing",
+    "cat__EducationField_Medical",
+    "cat__EducationField_Other",
+    "cat__EducationField_Technical Degree",
+    "cat__Gender_Male",
+    "cat__JobRole_Human Resources",
+    "cat__JobRole_Laboratory Technician",
+    "cat__JobRole_Manager",
+    "cat__JobRole_Manufacturing Director",
+    "cat__JobRole_Research Director",
+    "cat__JobRole_Research Scientist",
+    "cat__JobRole_Sales Executive",
+    "cat__JobRole_Sales Representative",
+    "cat__MaritalStatus_Married",
+    "cat__MaritalStatus_Single",
+    "cat__OverTime_Yes",
+    "cat__StockOptionCat_1",
+    "cat__StockOptionCat_2",
+    "cat__StockOptionCat_3"
+  ]
+}

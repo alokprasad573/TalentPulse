@@ -1,0 +1,433 @@
+{
+  "shape": {
+    "rows": 1470,
+    "columns": 35
+  },
+  "missing_values": 0,
+  "duplicates": 0,
+  "class_balance": {
+    "no": 1233,
+    "yes": 237,
+    "yes_pct": 16.12,
+    "ratio": 5.203
+  },
+  "constant_columns": [
+    "EmployeeCount",
+    "Over18",
+    "StandardHours"
+  ],
+  "id_columns": [
+    "EmployeeNumber"
+  ],
+  "legacy_corruption_audit": [
+    {
+      "column": "MonthlyIncome",
+      "modified_rows": 114,
+      "modified_pct": 7.76,
+      "raw_min": 1009.0,
+      "raw_max": 19999.0,
+      "legacy_min": 1009.0,
+      "legacy_max": 16555.0
+    },
+    {
+      "column": "NumCompaniesWorked",
+      "modified_rows": 52,
+      "modified_pct": 3.54,
+      "raw_min": 0.0,
+      "raw_max": 9.0,
+      "legacy_min": 0.0,
+      "legacy_max": 8.0
+    },
+    {
+      "column": "PerformanceRating",
+      "modified_rows": 226,
+      "modified_pct": 15.37,
+      "raw_min": 3.0,
+      "raw_max": 4.0,
+      "legacy_min": 3.0,
+      "legacy_max": 3.0
+    },
+    {
+      "column": "StockOptionLevel",
+      "modified_rows": 85,
+      "modified_pct": 5.78,
+      "raw_min": 0.0,
+      "raw_max": 3.0,
+      "legacy_min": 0.0,
+      "legacy_max": 2.0
+    },
+    {
+      "column": "TotalWorkingYears",
+      "modified_rows": 63,
+      "modified_pct": 4.29,
+      "raw_min": 0.0,
+      "raw_max": 40.0,
+      "legacy_min": 0.0,
+      "legacy_max": 28.0
+    },
+    {
+      "column": "TrainingTimesLastYear",
+      "modified_rows": 238,
+      "modified_pct": 16.19,
+      "raw_min": 0.0,
+      "raw_max": 6.0,
+      "legacy_min": 1.0,
+      "legacy_max": 4.0
+    },
+    {
+      "column": "YearsAtCompany",
+      "modified_rows": 104,
+      "modified_pct": 7.07,
+      "raw_min": 0.0,
+      "raw_max": 40.0,
+      "legacy_min": 0.0,
+      "legacy_max": 18.0
+    },
+    {
+      "column": "YearsInCurrentRole",
+      "modified_rows": 21,
+      "modified_pct": 1.43,
+      "raw_min": 0.0,
+      "raw_max": 18.0,
+      "legacy_min": 0.0,
+      "legacy_max": 14.0
+    },
+    {
+      "column": "YearsSinceLastPromotion",
+      "modified_rows": 107,
+      "modified_pct": 7.28,
+      "raw_min": 0.0,
+      "raw_max": 15.0,
+      "legacy_min": 0.0,
+      "legacy_max": 7.0
+    },
+    {
+      "column": "YearsWithCurrManager",
+      "modified_rows": 14,
+      "modified_pct": 0.95,
+      "raw_min": 0.0,
+      "raw_max": 17.0,
+      "legacy_min": 0.0,
+      "legacy_max": 14.0
+    }
+  ],
+  "categorical_associations": [
+    {
+      "feature": "OverTime",
+      "chi2": 87.564,
+      "p_value": 8.15842372153832e-21,
+      "cramers_v": 0.2441,
+      "highest_risk_group": "Yes (30.5%)",
+      "lowest_risk_group": "No (10.4%)"
+    },
+    {
+      "feature": "JobRole",
+      "chi2": 86.19,
+      "p_value": 2.752481638050657e-15,
+      "cramers_v": 0.2421,
+      "highest_risk_group": "Sales Representative (39.8%)",
+      "lowest_risk_group": "Research Director (2.5%)"
+    },
+    {
+      "feature": "MaritalStatus",
+      "chi2": 46.164,
+      "p_value": 9.45551106034083e-11,
+      "cramers_v": 0.1772,
+      "highest_risk_group": "Single (25.5%)",
+      "lowest_risk_group": "Divorced (10.1%)"
+    },
+    {
+      "feature": "BusinessTravel",
+      "chi2": 24.182,
+      "p_value": 5.608614476449931e-06,
+      "cramers_v": 0.1283,
+      "highest_risk_group": "Travel_Frequently (24.9%)",
+      "lowest_risk_group": "Non-Travel (8.0%)"
+    },
+    {
+      "feature": "EducationField",
+      "chi2": 16.025,
+      "p_value": 0.006773980139025212,
+      "cramers_v": 0.1044,
+      "highest_risk_group": "Human Resources (25.9%)",
+      "lowest_risk_group": "Other (13.4%)"
+    },
+    {
+      "feature": "Department",
+      "chi2": 10.796,
+      "p_value": 0.004525606574479633,
+      "cramers_v": 0.0857,
+      "highest_risk_group": "Sales (20.6%)",
+      "lowest_risk_group": "Research & Development (13.8%)"
+    },
+    {
+      "feature": "Gender",
+      "chi2": 1.117,
+      "p_value": 0.29057244902890855,
+      "cramers_v": 0.0276,
+      "highest_risk_group": "Male (17.0%)",
+      "lowest_risk_group": "Female (14.8%)"
+    }
+  ],
+  "numeric_associations": [
+    {
+      "feature": "TotalWorkingYears",
+      "skew": 1.12,
+      "iqr_outliers": 63,
+      "mean_stay": 11.86,
+      "mean_leave": 8.24,
+      "point_biserial_r": -0.1711,
+      "mw_p_value": 2.399569364798952e-14
+    },
+    {
+      "feature": "MonthlyIncome",
+      "skew": 1.37,
+      "iqr_outliers": 114,
+      "mean_stay": 6832.74,
+      "mean_leave": 4787.09,
+      "point_biserial_r": -0.1598,
+      "mw_p_value": 2.950830917288873e-14
+    },
+    {
+      "feature": "YearsAtCompany",
+      "skew": 1.76,
+      "iqr_outliers": 104,
+      "mean_stay": 7.37,
+      "mean_leave": 5.13,
+      "point_biserial_r": -0.1344,
+      "mw_p_value": 2.916191369956416e-13
+    },
+    {
+      "feature": "JobLevel",
+      "skew": 1.03,
+      "iqr_outliers": 0,
+      "mean_stay": 2.15,
+      "mean_leave": 1.64,
+      "point_biserial_r": -0.1691,
+      "mw_p_value": 2.9569874351771187e-13
+    },
+    {
+      "feature": "YearsInCurrentRole",
+      "skew": 0.92,
+      "iqr_outliers": 21,
+      "mean_stay": 4.48,
+      "mean_leave": 2.9,
+      "point_biserial_r": -0.1605,
+      "mw_p_value": 4.429559530312778e-12
+    },
+    {
+      "feature": "YearsWithCurrManager",
+      "skew": 0.83,
+      "iqr_outliers": 14,
+      "mean_stay": 4.37,
+      "mean_leave": 2.85,
+      "point_biserial_r": -0.1562,
+      "mw_p_value": 1.8067542583144407e-11
+    },
+    {
+      "feature": "StockOptionLevel",
+      "skew": 0.97,
+      "iqr_outliers": 85,
+      "mean_stay": 0.85,
+      "mean_leave": 0.53,
+      "point_biserial_r": -0.1371,
+      "mw_p_value": 4.0133750819833e-11
+    },
+    {
+      "feature": "Age",
+      "skew": 0.41,
+      "iqr_outliers": 0,
+      "mean_stay": 37.56,
+      "mean_leave": 33.61,
+      "point_biserial_r": -0.1592,
+      "mw_p_value": 5.304342075341702e-11
+    },
+    {
+      "feature": "JobInvolvement",
+      "skew": -0.5,
+      "iqr_outliers": 0,
+      "mean_stay": 2.77,
+      "mean_leave": 2.52,
+      "point_biserial_r": -0.13,
+      "mw_p_value": 4.651927394730666e-06
+    },
+    {
+      "feature": "JobSatisfaction",
+      "skew": -0.33,
+      "iqr_outliers": 0,
+      "mean_stay": 2.78,
+      "mean_leave": 2.47,
+      "point_biserial_r": -0.1035,
+      "mw_p_value": 7.957917840891011e-05
+    },
+    {
+      "feature": "EnvironmentSatisfaction",
+      "skew": -0.32,
+      "iqr_outliers": 0,
+      "mean_stay": 2.77,
+      "mean_leave": 2.46,
+      "point_biserial_r": -0.1034,
+      "mw_p_value": 0.00021730490274301747
+    },
+    {
+      "feature": "DistanceFromHome",
+      "skew": 0.96,
+      "iqr_outliers": 0,
+      "mean_stay": 8.92,
+      "mean_leave": 10.63,
+      "point_biserial_r": 0.0779,
+      "mw_p_value": 0.0023870470273627984
+    },
+    {
+      "feature": "DailyRate",
+      "skew": -0.0,
+      "iqr_outliers": 0,
+      "mean_stay": 812.5,
+      "mean_leave": 750.36,
+      "point_biserial_r": -0.0567,
+      "mw_p_value": 0.029004575546528265
+    },
+    {
+      "feature": "YearsSinceLastPromotion",
+      "skew": 1.98,
+      "iqr_outliers": 107,
+      "mean_stay": 2.23,
+      "mean_leave": 1.95,
+      "point_biserial_r": -0.033,
+      "mw_p_value": 0.0411791057847264
+    },
+    {
+      "feature": "WorkLifeBalance",
+      "skew": -0.55,
+      "iqr_outliers": 0,
+      "mean_stay": 2.78,
+      "mean_leave": 2.66,
+      "point_biserial_r": -0.0639,
+      "mw_p_value": 0.04647299591978787
+    },
+    {
+      "feature": "TrainingTimesLastYear",
+      "skew": 0.55,
+      "iqr_outliers": 238,
+      "mean_stay": 2.83,
+      "mean_leave": 2.62,
+      "point_biserial_r": -0.0595,
+      "mw_p_value": 0.04729570730410349
+    },
+    {
+      "feature": "RelationshipSatisfaction",
+      "skew": -0.3,
+      "iqr_outliers": 0,
+      "mean_stay": 2.73,
+      "mean_leave": 2.6,
+      "point_biserial_r": -0.0459,
+      "mw_p_value": 0.10202516234001409
+    },
+    {
+      "feature": "NumCompaniesWorked",
+      "skew": 1.03,
+      "iqr_outliers": 52,
+      "mean_stay": 2.65,
+      "mean_leave": 2.94,
+      "point_biserial_r": 0.0435,
+      "mw_p_value": 0.24236505088116522
+    },
+    {
+      "feature": "Education",
+      "skew": -0.29,
+      "iqr_outliers": 0,
+      "mean_stay": 2.93,
+      "mean_leave": 2.84,
+      "point_biserial_r": -0.0314,
+      "mw_p_value": 0.24483095442892966
+    },
+    {
+      "feature": "PercentSalaryHike",
+      "skew": 0.82,
+      "iqr_outliers": 0,
+      "mean_stay": 15.23,
+      "mean_leave": 15.1,
+      "point_biserial_r": -0.0135,
+      "mw_p_value": 0.36551461755468617
+    },
+    {
+      "feature": "MonthlyRate",
+      "skew": 0.02,
+      "iqr_outliers": 0,
+      "mean_stay": 14265.78,
+      "mean_leave": 14559.31,
+      "point_biserial_r": 0.0152,
+      "mw_p_value": 0.5587480971526364
+    },
+    {
+      "feature": "HourlyRate",
+      "skew": -0.03,
+      "iqr_outliers": 0,
+      "mean_stay": 65.95,
+      "mean_leave": 65.57,
+      "point_biserial_r": -0.0068,
+      "mw_p_value": 0.7976302912394753
+    },
+    {
+      "feature": "PerformanceRating",
+      "skew": 1.92,
+      "iqr_outliers": 226,
+      "mean_stay": 3.15,
+      "mean_leave": 3.16,
+      "point_biserial_r": 0.0029,
+      "mw_p_value": 0.9119454298415578
+    }
+  ],
+  "high_collinearity_pairs": [
+    {
+      "a": "JobLevel",
+      "b": "MonthlyIncome",
+      "r": 0.9503
+    },
+    {
+      "a": "JobLevel",
+      "b": "TotalWorkingYears",
+      "r": 0.7822
+    },
+    {
+      "a": "PercentSalaryHike",
+      "b": "PerformanceRating",
+      "r": 0.7735
+    },
+    {
+      "a": "MonthlyIncome",
+      "b": "TotalWorkingYears",
+      "r": 0.7729
+    },
+    {
+      "a": "YearsAtCompany",
+      "b": "YearsWithCurrManager",
+      "r": 0.7692
+    },
+    {
+      "a": "YearsAtCompany",
+      "b": "YearsInCurrentRole",
+      "r": 0.7588
+    },
+    {
+      "a": "YearsInCurrentRole",
+      "b": "YearsWithCurrManager",
+      "r": 0.7144
+    },
+    {
+      "a": "Age",
+      "b": "TotalWorkingYears",
+      "r": 0.6804
+    },
+    {
+      "a": "TotalWorkingYears",
+      "b": "YearsAtCompany",
+      "r": 0.6281
+    },
+    {
+      "a": "YearsAtCompany",
+      "b": "YearsSinceLastPromotion",
+      "r": 0.6184
+    }
+  ]
+}
